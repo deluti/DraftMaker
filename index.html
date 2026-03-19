@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DraftCraft — редактор чертежей локаций</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+    <div class="app-container">
+        <!-- Верхняя панель инструментов -->
+        <div class="toolbar">
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="select" title="Выделить/редактировать (ESC для отмены)">🖱️</button>
+                <button class="tool-btn" data-tool="line" title="Линия">📏</button>
+                <button class="tool-btn" data-tool="rect" title="Прямоугольник/квадрат">▭</button>
+                <button class="tool-btn" data-tool="arc" title="Дуга по трём точкам">🌀</button>
+                <button class="tool-btn" data-tool="text" title="Текст">T</button>
+                <button class="tool-btn" data-tool="vector" title="Вектор (ломаная)">📐</button>
+            </div>
+            
+            <div class="color-picker-wrap">
+                <span>🎨</span>
+                <input type="color" id="colorInput" value="#1e3a8a">
+            </div>
+            
+            <select id="lineStyleSelect" class="line-style-select">
+                <option value="solid">— Солид (сплошная)</option>
+                <option value="dashed">- - - Пунктир</option>
+                <option value="bold">⬤⬤⬤ Болд (3px)</option>
+                <option value="italic">✎ Италик (наклон)</option>
+            </select>
+
+            <!-- История действий -->
+            <div class="tool-group">
+                <button class="tool-btn" id="undoBtn" title="Отменить (Ctrl+Z)">↩️</button>
+                <button class="tool-btn" id="redoBtn" title="Повторить (Ctrl+Y)">↪️</button>
+            </div>
+
+            <!-- Масштаб и навигация -->
+            <div class="tool-group">
+                <button class="tool-btn" id="zoomInBtn" title="Приблизить (Ctrl++)">🔍+</button>
+                <button class="tool-btn" id="zoomOutBtn" title="Отдалить (Ctrl+-)">🔍-</button>
+                <button class="tool-btn" id="resetViewBtn" title="Сбросить вид">⌂</button>
+                <span class="zoom-indicator" id="zoomPercent">100%</span>
+            </div>
+
+            <!-- Переключатель темы -->
+            <div class="tool-group">
+                <button class="tool-btn" id="themeToggleBtn" title="Переключить тему">🌓</button>
+            </div>
+
+            <div class="action-btns">
+                <button class="primary-btn" id="saveScreenBtn">📸 Сохранить скрин</button>
+                <button class="primary-btn" id="saveFileBtn">💾 Скачать проект</button>
+            </div>
+        </div>
+
+        <!-- Рабочая область с холстом -->
+        <div class="canvas-area">
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <canvas id="gridCanvas" width="1200" height="800"></canvas>
+            </div>
+            
+            <!-- Боковая панель инспектора -->
+            <div class="inspector" id="inspector">
+                <h3>🔍 Инспектор</h3>
+                <div class="vector-coord" id="vectorDisplay">
+                    <div class="coord-row"><span>X</span> <span id="vecX">—</span></div>
+                    <div class="coord-row"><span>Y</span> <span id="vecY">—</span></div>
+                </div>
+                
+                <!-- Панель редактирования выделенного объекта -->
+                <div class="edit-panel" id="editPanel" style="display: none;">
+                    <h4>✏️ Редактирование</h4>
+                    <div class="edit-row">
+                        <label>Цвет:</label>
+                        <input type="color" id="editColor" class="edit-color">
+                    </div>
+                    <div class="edit-row">
+                        <label>Стиль:</label>
+                        <select id="editStyle" class="edit-style">
+                            <option value="solid">Сплошная</option>
+                            <option value="dashed">Пунктир</option>
+                            <option value="bold">Болд</option>
+                            <option value="italic">Италик</option>
+                        </select>
+                    </div>
+                    <div class="edit-row" id="editTextRow" style="display: none;">
+                        <label>Текст:</label>
+                        <input type="text" id="editText" class="edit-text" placeholder="Введите текст">
+                    </div>
+                    <div class="edit-buttons">
+                        <button class="secondary-btn" id="applyEditBtn">Применить</button>
+                        <button class="secondary-btn" id="deleteObjBtn">🗑️ Удалить</button>
+                    </div>
+                </div>
+
+                <div class="status-note" id="toolStatus">
+                    ✦ Режим: выделение
+                </div>
+
+                <!-- Файловые операции -->
+                <div class="file-actions">
+                    <div class="file-row">
+                        <input type="file" id="openFileInput" accept=".json,.draft">
+                        <label for="openFileInput">📂 Открыть проект</label>
+                    </div>
+                    <button class="secondary-btn" id="clearCanvasBtn">🧹 Очистить всё</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
